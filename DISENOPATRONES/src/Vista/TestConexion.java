@@ -1,3 +1,5 @@
+package Vista;
+
 
 import Modelo.ConexionBD;
 import java.sql.Connection;
