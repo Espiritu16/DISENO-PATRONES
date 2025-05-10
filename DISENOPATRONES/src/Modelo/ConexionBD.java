@@ -9,33 +9,26 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionBD {
-    private static ConexionBD instancia;
+    private static ConexionBD singleton;
     private Connection conexion;
     
-    // Configuración para SQL Server con SistemaResiduos
     private final String url = "jdbc:sqlserver://localhost:1433;"
                              + "databaseName=SResiduos;"
                              + "encrypt=true;"
                              + "trustServerCertificate=true;"
                              + "loginTimeout=30;";
     
-    private final String usuario = "sa"; // Usuario de SQL Server
-    private final String clave = "root"; // Cambiar por tu contraseña
+    private final String usuario = "sa";
+    private final String clave = "root";
     
     private ConexionBD() {
         try {
-            // Registrar el driver de SQL Server
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            
-            // Establecer la conexión
             conexion = DriverManager.getConnection(url, usuario, clave);
-            conexion.setAutoCommit(false); // Manejar transacciones manualmente
-            
+            conexion.setAutoCommit(false);
             System.out.println("Conexión exitosa a SQL Server - SistemaResiduos");
-            
         } catch (ClassNotFoundException e) {
             System.err.println("Error: No se encontró el driver JDBC para SQL Server");
-            System.err.println("Asegúrate de incluir el archivo mssql-jdbc.jar en tu classpath");
             e.printStackTrace();
         } catch (SQLException e) {
             System.err.println("Error al conectar a la base de datos:");
@@ -45,21 +38,20 @@ public class ConexionBD {
         }
     }
     
-    public static ConexionBD getInstancia() {
-        if (instancia == null) {
+    public static ConexionBD getSingleton() {
+        if (singleton == null) {
             synchronized (ConexionBD.class) {
-                if (instancia == null) {
-                    instancia = new ConexionBD();
+                if (singleton == null) {
+                    singleton = new ConexionBD();
                 }
             }
         }
-        return instancia;
+        return singleton;
     }
     
     public Connection getConexion() {
         try {
             if (conexion == null || conexion.isClosed()) {
-                // Reconectar si la conexión está cerrada
                 conexion = DriverManager.getConnection(url, usuario, clave);
             }
         } catch (SQLException e) {
@@ -68,7 +60,6 @@ public class ConexionBD {
         return conexion;
     }
     
-    // Métodos adicionales para manejo de transacciones
     public void commit() {
         try {
             if (conexion != null && !conexion.isClosed()) {

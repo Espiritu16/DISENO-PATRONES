@@ -9,7 +9,7 @@ public class ResiduoDAO {
     public int ejecutarCRUD(String operacion, Residuos residuo) {
         int resultado = -1;
         
-        try (Connection con = ConexionBD.getInstancia().getConexion();
+        try (Connection con = ConexionBD.getSingleton().getConexion();
              CallableStatement stmt = con.prepareCall("{call sp_Residuos_CRUD(?, ?, ?, ?, ?, ?, ?, ?)}")) {
             
             // Configurar parámetros de entrada

@@ -13,7 +13,7 @@ public class UsuarioDAO {
      public int ejecutarCRUD(String operacion, Usuario usuario) {
         int resultado = -1;
 
-        try (Connection con = ConexionBD.getInstancia().getConexion();
+        try (Connection con = ConexionBD.getSingleton().getConexion();
              // ✅ Cambiado a 9 parámetros (agregamos un '?' adicional para el parámetro OUTPUT)
              CallableStatement stmt = con.prepareCall("{call sp_crud_usuario_simple(?,?,?,?,?,?,?,?,?)}")) {
 

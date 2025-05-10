@@ -14,7 +14,7 @@ public class TestConexion {
 
     public static void main(String[] args) {
 
-        ConexionBD conexionBD = ConexionBD.getInstancia();
+        ConexionBD conexionBD = ConexionBD.getSingleton();
 
         Connection conexion = conexionBD.getConexion();
 
