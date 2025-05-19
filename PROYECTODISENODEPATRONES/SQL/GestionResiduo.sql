@@ -8,7 +8,7 @@ CREATE TABLE Direccion (
     ciudad VARCHAR(100) NOT NULL,
     distrito VARCHAR(100),
     codigo_postal VARCHAR(20),
-    pais VARCHAR(100) DEFAULT 'Per�',
+    pais VARCHAR(100) DEFAULT 'Peru',
     referencia VARCHAR(255),
     fecha_creacion DATETIME DEFAULT GETDATE(),
     fecha_actualizacion DATETIME DEFAULT GETDATE()
@@ -171,6 +171,16 @@ CREATE INDEX IX_Notificacion_Estado ON Notificacion(estado);
 CREATE INDEX IX_Sugerencia_Estado ON Sugerencia(estado);
 GO
 
+
+
+
+
+
+
+
+
+
+
 --Procedimineto Almacenado CRUD Usuario--
 CREATE PROCEDURE sp_crud_usuario_simple
     @opcion VARCHAR(10), -- 'CREATE', 'READ', 'UPDATE', 'DELETE'
@@ -269,15 +279,24 @@ BEGIN
 END
 GO
 
---crud para Residuos--
-CREATE PROCEDURE sp_crud_residuos
+
+
+
+
+
+
+
+
+
+CREATE PROCEDURE sp_crud_direccion
     @opcion VARCHAR(10), -- 'CREATE', 'READ', 'UPDATE', 'DELETE'
-    @idResiduos INT = NULL, -- Para actualizar o eliminar un residuo específico
-    @nombre VARCHAR(100) = NULL, -- Nombre del residuo
-    @idClasificacion INT = NULL, -- Clasificación del residuo (referencia a la tabla Clasificacion_Residuos)
-    @descripcion VARCHAR(255) = NULL, -- Descripción del residuo
-    @unidad_medida VARCHAR(50) = NULL, -- Unidad de medida
-    @peligrosidad VARCHAR(50) = NULL, -- Peligrosidad del residuo
+    @idDireccion INT = NULL,
+    @direccion VARCHAR(255) = NULL,
+    @ciudad VARCHAR(100) = NULL,
+    @distrito VARCHAR(100) = NULL,
+    @codigo_postal VARCHAR(20) = NULL,
+    @pais VARCHAR(100) = NULL,
+    @referencia VARCHAR(255) = NULL,
     @resultado INT OUTPUT
 AS
 BEGIN
@@ -285,50 +304,114 @@ BEGIN
 
     IF @opcion = 'CREATE'
     BEGIN
-        -- Validación básica de campos requeridos
+        IF @direccion IS NULL OR @ciudad IS NULL
+        BEGIN
+            SET @resultado = -1; -- Campos obligatorios faltantes
+            RETURN;
+        END
+
+        INSERT INTO Direccion (
+            direccion, ciudad, distrito, codigo_postal, pais, referencia, fecha_creacion, fecha_actualizacion
+        )
+        VALUES (
+            @direccion, @ciudad, @distrito, @codigo_postal, ISNULL(@pais, 'Perú'), @referencia, GETDATE(), GETDATE()
+        );
+
+        SET @resultado = SCOPE_IDENTITY();
+    END
+    ELSE IF @opcion = 'READ'
+    BEGIN
+        IF @idDireccion IS NULL
+            SELECT * FROM Direccion;
+        ELSE
+            SELECT * FROM Direccion WHERE idDireccion = @idDireccion;
+    END
+    ELSE IF @opcion = 'UPDATE'
+    BEGIN
+        UPDATE Direccion SET
+            direccion = ISNULL(@direccion, direccion),
+            ciudad = ISNULL(@ciudad, ciudad),
+            distrito = ISNULL(@distrito, distrito),
+            codigo_postal = ISNULL(@codigo_postal, codigo_postal),
+            pais = ISNULL(@pais, pais),
+            referencia = ISNULL(@referencia, referencia),
+            fecha_actualizacion = GETDATE()
+        WHERE idDireccion = @idDireccion;
+
+        SET @resultado = @idDireccion;
+    END
+    ELSE IF @opcion = 'DELETE'
+    BEGIN
+        IF EXISTS (SELECT 1 FROM Usuario WHERE idDireccion = @idDireccion)
+        BEGIN
+            SET @resultado = -1; -- Relación existente con Usuario
+            RETURN;
+        END
+
+        DELETE FROM Direccion WHERE idDireccion = @idDireccion;
+        SET @resultado = @idDireccion;
+    END
+END
+GO
+
+
+
+
+
+CREATE PROCEDURE sp_crud_residuos
+    @opcion VARCHAR(10), -- 'CREATE', 'READ', 'UPDATE', 'DELETE'
+    @idResiduos INT = NULL,
+    @nombre VARCHAR(100) = NULL,
+    @idClasificacion INT = NULL,
+    @descripcion VARCHAR(255) = NULL,
+    @unidad_medida VARCHAR(50) = NULL,
+    @peligrosidad VARCHAR(50) = NULL,
+    @resultado INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @opcion = 'CREATE'
+    BEGIN
         IF @nombre IS NULL OR @idClasificacion IS NULL
         BEGIN
-            SET @resultado = -1; -- Error: Campos requeridos faltantes
+            SET @resultado = -1; -- Campos obligatorios faltantes
+            RETURN;
+        END
+
+        -- Validar que la clasificación exista
+        IF NOT EXISTS (SELECT 1 FROM Clasificacion_Residuos WHERE idClasificacion = @idClasificacion)
+        BEGIN
+            SET @resultado = -2; -- Clasificación no existe
             RETURN;
         END
 
         INSERT INTO Residuos (
-            nombre,
-            idClasificacion,
-            descripcion,
-            unidad_medida,
-            peligrosidad,
-            fecha_registro
+            nombre, idClasificacion, descripcion, unidad_medida, peligrosidad, fecha_registro
         )
         VALUES (
-            @nombre,
-            @idClasificacion,
-            @descripcion,
-            @unidad_medida,
-            @peligrosidad,
-            GETDATE() -- fecha_registro automática
+            @nombre, @idClasificacion, @descripcion, ISNULL(@unidad_medida, 'Kilogramos'), @peligrosidad, GETDATE()
         );
 
-        SET @resultado = SCOPE_IDENTITY(); -- Devuelve el ID del nuevo residuo creado
+        SET @resultado = SCOPE_IDENTITY();
     END
     ELSE IF @opcion = 'READ'
     BEGIN
         IF @idResiduos IS NULL
-            SELECT * FROM Residuos; -- Si no se pasa un ID, retorna todos los residuos
+            SELECT * FROM Residuos;
         ELSE
-            SELECT * FROM Residuos WHERE idResiduos = @idResiduos; -- Retorna un residuo específico
+            SELECT * FROM Residuos WHERE idResiduos = @idResiduos;
     END
     ELSE IF @opcion = 'UPDATE'
     BEGIN
-        -- Validación básica
-        IF @idResiduos IS NULL
+        -- Validar si se actualiza la clasificación que exista
+        IF @idClasificacion IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Clasificacion_Residuos WHERE idClasificacion = @idClasificacion)
         BEGIN
-            SET @resultado = -1; -- Error: ID del residuo faltante
+            SET @resultado = -2; -- Clasificación no existe
             RETURN;
         END
 
-        UPDATE Residuos
-        SET
+        UPDATE Residuos SET
             nombre = ISNULL(@nombre, nombre),
             idClasificacion = ISNULL(@idClasificacion, idClasificacion),
             descripcion = ISNULL(@descripcion, descripcion),
@@ -336,23 +419,113 @@ BEGIN
             peligrosidad = ISNULL(@peligrosidad, peligrosidad)
         WHERE idResiduos = @idResiduos;
 
-        SET @resultado = @idResiduos; -- Retorna el ID del residuo actualizado
+        SET @resultado = @idResiduos;
     END
     ELSE IF @opcion = 'DELETE'
     BEGIN
-        -- Verificación para asegurarse de que no existan registros relacionados
-        IF EXISTS (SELECT 1 FROM Ingreso_Residuos WHERE idResiduos = @idResiduos)
-        BEGIN
-            SET @resultado = -1; -- No se puede eliminar porque el residuo está relacionado con otros registros
-            RETURN;
-        END
-
         DELETE FROM Residuos WHERE idResiduos = @idResiduos;
-
-        SET @resultado = @idResiduos; -- Retorna el ID del residuo eliminado
+        SET @resultado = @idResiduos;
     END
 END
 GO
+
+
+
+
+
+
+
+
+
+
+
+CREATE PROCEDURE sp_crud_clasificacion_residuos
+    @opcion VARCHAR(10), -- 'CREATE', 'READ', 'UPDATE', 'DELETE'
+    @idClasificacion INT = NULL,
+    @nombre VARCHAR(100) = NULL,
+    @descripcion VARCHAR(255) = NULL,
+    @color_codigo VARCHAR(20) = NULL,
+    @icono VARCHAR(50) = NULL,
+    @resultado INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @opcion = 'CREATE'
+    BEGIN
+        IF @nombre IS NULL OR @descripcion IS NULL
+        BEGIN
+            SET @resultado = -1; -- Campos obligatorios faltantes
+            RETURN;
+        END
+
+        INSERT INTO Clasificacion_Residuos (
+            nombre, descripcion, color_codigo, icono, fecha_creacion
+        )
+        VALUES (
+            @nombre, @descripcion, @color_codigo, @icono, GETDATE()
+        );
+
+        SET @resultado = SCOPE_IDENTITY();
+        RETURN;
+    END
+    ELSE IF @opcion = 'READ'
+    BEGIN
+        SET @resultado = 0; -- Asignar siempre resultado
+
+        -- Opción 1: puedes devolver datos aquí pero Java debe manejar resultset
+        IF @idClasificacion IS NULL
+            SELECT * FROM Clasificacion_Residuos;
+        ELSE
+            SELECT * FROM Clasificacion_Residuos WHERE idClasificacion = @idClasificacion;
+
+        RETURN;
+    END
+    ELSE IF @opcion = 'UPDATE'
+    BEGIN
+        UPDATE Clasificacion_Residuos SET
+            nombre = ISNULL(@nombre, nombre),
+            descripcion = ISNULL(@descripcion, descripcion),
+            color_codigo = ISNULL(@color_codigo, color_codigo),
+            icono = ISNULL(@icono, icono)
+        WHERE idClasificacion = @idClasificacion;
+
+        SET @resultado = @idClasificacion;
+        RETURN;
+    END
+    ELSE IF @opcion = 'DELETE'
+    BEGIN
+        IF EXISTS (SELECT 1 FROM Residuos WHERE idClasificacion = @idClasificacion)
+        BEGIN
+            SET @resultado = -1; -- No se puede eliminar por residuos vinculados
+            RETURN;
+        END
+
+        DELETE FROM Clasificacion_Residuos WHERE idClasificacion = @idClasificacion;
+        SET @resultado = @idClasificacion;
+        RETURN;
+    END
+    ELSE
+    BEGIN
+        SET @resultado = -99; -- Opción inválida
+        RETURN;
+    END
+END
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- Insertar 10 registros en la tabla Direccion
 INSERT INTO Direccion (direccion, ciudad, distrito, codigo_postal, referencia)
@@ -390,7 +563,7 @@ GO
 select * from Usuario;
 GO
 
-SELECT * from Direccion;
+select * from Direccion;
 GO
 
 SELECT * from Clasificacion_Residuos;
@@ -409,3 +582,17 @@ DELETE FROM Residuos;
 DELETE FROM Clasificacion_Residuos;
 DELETE FROM Usuario;
 DELETE FROM Direccion;
+GO
+
+IF OBJECT_ID('sp_registro_completo_usuario_residuo', 'P') IS NOT NULL
+    DROP PROCEDURE sp_registro_completo_usuario_residuo;
+GO
+
+
+SELECT 
+    p.name AS ProcedureName,
+    prm.name AS ParameterName,
+    prm.is_output
+FROM sys.procedures p
+JOIN sys.parameters prm ON p.object_id = prm.object_id
+WHERE p.name = 'sp_crud_clasificacion_residuos';
