@@ -1,65 +1,63 @@
-
 package Modelo;
+
 import Controlador.CRUD;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResiduosDAO implements CRUD {
 
-    // Método para crear un nuevo residuo
     @Override
     public int crear(Object objeto) {
         if (objeto instanceof PrototypeResiduo) {
             PrototypeResiduo residuo = (PrototypeResiduo) objeto;
-            String sql = "{CALL sp_crud_residuos(?, ?, ?, ?, ?, ?, ?, ?)}";  // Llamada al procedimiento almacenado
+
+            String sql = "{CALL sp_crud_residuos(?, ?, ?, ?, ?, ?, ?, ?)}";
             int resultado = -1;
 
-            try (Connection connection = ConexionSingleton.getConexion();
-                 CallableStatement stmt = connection.prepareCall(sql)) {
+            try {
+                Connection connection = ConexionSingleton.getConexion();
+                CallableStatement stmt = connection.prepareCall(sql);
 
-                // Establecer los parámetros para el procedimiento almacenado
-                stmt.setString(1, "CREATE");  // Opción 'CREATE' para insertar un nuevo residuo
-                stmt.setNull(2, Types.INTEGER); // El parámetro idResiduos se maneja como auto-generado
+                stmt.setString(1, "CREATE");
+                stmt.setNull(2, Types.INTEGER); // idResiduos NULL para crear
                 stmt.setString(3, residuo.getNombre());
-                stmt.setInt(4, residuo.getIdClasificacion());  // idClasificacion (clave foránea)
+                stmt.setInt(4, residuo.getIdClasificacion());
                 stmt.setString(5, residuo.getDescripcion());
                 stmt.setString(6, residuo.getUnidad_medida());
                 stmt.setString(7, residuo.getPeligrosidad());
+                stmt.registerOutParameter(8, Types.INTEGER);
 
-                stmt.registerOutParameter(8, Types.INTEGER);  // Parámetro de salida para el resultado
-
-                // Ejecutar el procedimiento almacenado
                 stmt.execute();
-
-                // Obtener el resultado de la operación
                 resultado = stmt.getInt(8);
 
+                stmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.out.println("Error al insertar residuo.");
             }
 
-            return resultado;  // Retornar el resultado del procedimiento (código de error o idResiduos)
+            return resultado;
         } else {
             System.out.println("El objeto no es del tipo esperado (PrototypeResiduo)");
-            return -1;  // Retornar un valor de error si el tipo no es el esperado
+            return -1;
         }
     }
 
-    // Método para leer los residuos (ejemplo de lectura, se debe ajustar a tu caso)
-    @Override
-    public void leer() {
-       
-    }
+    
 
-    // Método para actualizar un residuo
     @Override
     public void actualizar() {
-        
+        throw new UnsupportedOperationException("No implementado aún.");
     }
 
-    // Método para eliminar un residuo
     @Override
     public void eliminar() {
-       
+        throw new UnsupportedOperationException("No implementado aún.");
+    }
+
+    @Override
+    public void leer() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

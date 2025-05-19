@@ -1,9 +1,8 @@
-
 package Modelo;
+
 import java.sql.Date;
 
 public class PrototypeResiduo implements Cloneable {
-
     private int idResiduos;
     private String nombre;
     private int idClasificacion;
@@ -12,13 +11,10 @@ public class PrototypeResiduo implements Cloneable {
     private String peligrosidad;
     private Date fecha_registro;
 
-    public PrototypeResiduo() {
-    }
+    public PrototypeResiduo() {}
 
-    
-    // Constructor
-    public PrototypeResiduo(int idResiduos, String nombre, int idClasificacion, String descripcion, 
-                            String unidad_medida, String peligrosidad, Date fecha_registro) {
+    public PrototypeResiduo(int idResiduos, String nombre, int idClasificacion, String descripcion,
+                           String unidad_medida, String peligrosidad, Date fecha_registro) {
         this.idResiduos = idResiduos;
         this.nombre = nombre;
         this.idClasificacion = idClasificacion;
@@ -28,7 +24,6 @@ public class PrototypeResiduo implements Cloneable {
         this.fecha_registro = fecha_registro;
     }
 
-    // Métodos getter y setter
     public int getIdResiduos() {
         return idResiduos;
     }
@@ -85,17 +80,15 @@ public class PrototypeResiduo implements Cloneable {
         this.fecha_registro = fecha_registro;
     }
 
-    // Método para clonar el objeto PrototypeResiduo
     @Override
     public PrototypeResiduo clone() throws CloneNotSupportedException {
         return (PrototypeResiduo) super.clone();
     }
 
-    // Método toString para mostrar información
     @Override
     public String toString() {
-        return "PrototypeResiduo [idResiduos=" + idResiduos + ", nombre=" + nombre + ", idClasificacion=" + idClasificacion 
-                + ", descripcion=" + descripcion + ", unidad_medida=" + unidad_medida + ", peligrosidad=" + peligrosidad 
-                + ", fecha_registro=" + fecha_registro + "]";
+        return "PrototypeResiduo [idResiduos=" + idResiduos + ", nombre=" + nombre + ", idClasificacion=" + idClasificacion +
+               ", descripcion=" + descripcion + ", unidad_medida=" + unidad_medida + ", peligrosidad=" + peligrosidad +
+               ", fecha_registro=" + fecha_registro + "]";
     }
 }
