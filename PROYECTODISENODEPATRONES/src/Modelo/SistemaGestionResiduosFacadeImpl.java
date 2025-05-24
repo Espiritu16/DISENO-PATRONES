@@ -1,5 +1,6 @@
-package fachada;
+package Modelo;
 
+import Modelo.SistemaGestionResiduosFacade;
 import Controlador.CRUD;
 import Controlador.CRUDFactory;
 import Controlador.EntidadDAOFactory;

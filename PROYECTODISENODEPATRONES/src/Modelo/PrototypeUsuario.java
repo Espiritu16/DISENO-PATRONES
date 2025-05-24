@@ -19,7 +19,6 @@ public class PrototypeUsuario implements Cloneable {
     public PrototypeUsuario() {
     }
 
-    
     // Constructor
     public PrototypeUsuario(int idUsuario, String nombre, String apellido, String correo, 
                             String telefono, String contrasena_hash, int idDireccion, 

@@ -7,8 +7,8 @@ import Controlador.CRUD;
 import Controlador.CRUDFactory;
 import Controlador.EntidadDAOFactory;
 import Modelo.*;
-import fachada.SistemaGestionResiduosFacade;
-import fachada.SistemaGestionResiduosFacadeImpl;
+import Modelo.SistemaGestionResiduosFacade;
+import Modelo.SistemaGestionResiduosFacadeImpl;
 
 public class RegistroConTabsSeguro extends JFrame {
     private JTabbedPane tabbedPane;
@@ -35,22 +35,70 @@ public class RegistroConTabsSeguro extends JFrame {
     public RegistroConTabsSeguro() {
         setTitle("Registro con pestañas seguro");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setSize(600, 600);
+        setLayout(new BorderLayout());
 
+        // 🎨 Menú superior interactivo
+        JPanel menuSuperior = new JPanel(new GridLayout(1, 4));
+        menuSuperior.setBackground(new Color(200, 230, 255)); // Azul claro
+
+        JButton m1 = new JButton("M1");
+        JButton m2 = new JButton("M2");
+        JButton m3 = new JButton("M3");
+        JButton registro = new JButton("Registro");
+
+        // Establecer los colores de fondo y de texto
+        m1.setBackground(new Color(0x2196F3)); // Azul claro para M1
+        m1.setForeground(Color.BLACK); // Texto negro
+
+        m2.setBackground(new Color(0x2196F3)); // Azul claro para M2
+        m2.setForeground(Color.BLACK); // Texto negro
+
+        m3.setBackground(new Color(0x2196F3)); // Azul claro para M3
+        m3.setForeground(Color.BLACK); // Texto negro
+
+        registro.setBackground(new Color(0xFFEB3B)); // Amarillo para el registro
+        registro.setForeground(Color.BLACK); // Texto negro
+
+        m1.addActionListener(e -> JOptionPane.showMessageDialog(this, "M1 aún no implementado"));
+        m2.addActionListener(e -> JOptionPane.showMessageDialog(this, "M2 aún no implementado"));
+        m3.addActionListener(e -> JOptionPane.showMessageDialog(this, "M3 aún no implementado"));
+        registro.addActionListener(e -> {
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Desea volver al formulario inicial?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                limpiarFormulario();
+                tabbedPane.setSelectedIndex(0);
+            }
+        });
+
+        menuSuperior.add(m1);
+        menuSuperior.add(m2);
+        menuSuperior.add(m3);
+        menuSuperior.add(registro);
+        add(menuSuperior, BorderLayout.NORTH);
+
+        // Pestañas
         tabbedPane = new JTabbedPane();
-
         tabbedPane.add("Usuario y Dirección", crearPanelUsuarioDireccion());
         tabbedPane.add("Clasificación", crearPanelClasificacion());
         tabbedPane.add("Residuo", crearPanelResiduo());
 
         add(tabbedPane, BorderLayout.CENTER);
 
+        // Panel de botones de navegación
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnAnterior = new JButton("Anterior");
         btnSiguiente = new JButton("Siguiente");
+
+        // Estilo de los botones
+        btnAnterior.setBackground(new Color(0xF44336)); // Rojo para Anterior
+        btnAnterior.setForeground(Color.BLACK); // Texto negro
+
+        btnSiguiente.setBackground(new Color(0x4CAF50)); // Verde para Siguiente
+        btnSiguiente.setForeground(Color.BLACK); // Texto negro
+
         panelBotones.add(btnAnterior);
         panelBotones.add(btnSiguiente);
-
         add(panelBotones, BorderLayout.SOUTH);
 
         // Bloquear tabs 2 y 3 inicialmente
@@ -60,6 +108,7 @@ public class RegistroConTabsSeguro extends JFrame {
         // Impedir cambio por clic en tab deshabilitado
         tabbedPane.addChangeListener(new ChangeListener() {
             private int lastSelected = 0;
+
             @Override
             public void stateChanged(ChangeEvent e) {
                 int selected = tabbedPane.getSelectedIndex();
@@ -265,8 +314,8 @@ public class RegistroConTabsSeguro extends JFrame {
     }
 
     private boolean guardarTodoEnBD() {
-    SistemaGestionResiduosFacade fachada = new SistemaGestionResiduosFacadeImpl();
-    return fachada.registrarFlujoCompleto(usuario, direccion, clasificacion, residuo);
+        SistemaGestionResiduosFacade fachada = new SistemaGestionResiduosFacadeImpl();
+        return fachada.registrarFlujoCompleto(usuario, direccion, clasificacion, residuo);
     }
 
     private void limpiarFormulario() {
@@ -303,6 +352,12 @@ public class RegistroConTabsSeguro extends JFrame {
     }
 
     public static void main(String[] args) {
+         // Aplicamos Look and Feel Nimbus para asegurar la correcta visualización de los colores
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         SwingUtilities.invokeLater(() -> new RegistroConTabsSeguro());
     }
 }
