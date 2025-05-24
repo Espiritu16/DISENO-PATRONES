@@ -172,6 +172,11 @@ public class RegistroConTabsSeguro extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+     
+    // Método para mostrar el formulario (pestañas)
+public void mostrarFormulario() {
+   
+}
 
     private JPanel crearPanelUsuarioDireccion() {
         JPanel panel = new JPanel(new GridLayout(11, 2, 5, 5));
@@ -360,4 +365,5 @@ public class RegistroConTabsSeguro extends JFrame {
         }
         SwingUtilities.invokeLater(() -> new RegistroConTabsSeguro());
     }
+    
 }
