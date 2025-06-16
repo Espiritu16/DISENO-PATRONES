@@ -13,6 +13,8 @@ import javax.swing.JButton;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
+        private VentanaRegistro ventanaRegistroPanel; // Declarar como atributo para reutilizar la instancia si es necesario
+
     /**
      * Creates new form VentanaPrincipal
      */
@@ -20,6 +22,31 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         initComponents();
         // Centrar la ventana en la pantalla
         setLocationRelativeTo(null);  // Esto coloca la ventana en el centro
+    }
+    
+     // --- NUEVO MÉTODO PARA MOSTRAR EL PANEL DE REGISTRO AL INICIO ---
+    public void mostrarPanelRegistroAlInicio() {
+        // Este es el código del btnRegistroActionPerformed que ya tenías, pero ahora público.
+
+        // Si ya existe una instancia de VentanaRegistro, podríamos reutilizarla o crear una nueva.
+        // Para este caso, creamos siempre una nueva para limpiar el estado del formulario.
+        ventanaRegistroPanel = new VentanaRegistro(); // Asegúrate de que VentanaRegistro extiende JPanel
+
+        // Limpiar el panel actual (importante para evitar componentes superpuestos)
+        panelCambiable.removeAll();
+
+        // Agregar el panel de registro al panelCambiable
+        panelCambiable.add(ventanaRegistroPanel);
+
+        // Actualizar la vista
+        panelCambiable.revalidate();
+        panelCambiable.repaint();
+
+        // Deshabilitar los botones de navegación (excepto el de Registro)
+        btnServicios.setEnabled(false);
+        btnSugerencias.setEnabled(false);
+        btnEstadistica.setEnabled(false);
+        // btnRegistro ya estará visible y activo, no necesitas deshabilitarlo
     }
 
     /**

@@ -1,10 +1,10 @@
-package Modelo;
+package Modelo.Facade;
 
-import Modelo.Registro.PrototypeClasificacionResiduo;
-import Modelo.Registro.PrototypeDireccion;
-import Modelo.Registro.PrototypeResiduo;
-import Modelo.Registro.PrototypeUsuario;
-import Modelo.SistemaGestionResiduosFacade;
+import Modelo.RegistroPrototype.PrototypeClasificacionResiduo;
+import Modelo.RegistroPrototype.PrototypeDireccion;
+import Modelo.RegistroPrototype.PrototypeResiduo;
+import Modelo.RegistroPrototype.PrototypeUsuario;
+import Modelo.Facade.SistemaGestionResiduosFacade;
 import Controlador.CRUD;
 import Controlador.PatronFactory.CRUDFactory;
 import Controlador.PatronFactory.EntidadDAOFactory;

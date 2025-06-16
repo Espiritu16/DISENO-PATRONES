@@ -1,4 +1,4 @@
-package Vista.PatronObserver;
+package Modelo.Observer;
 
 
 import javax.swing.JButton;

@@ -1,14 +1,14 @@
 package Vista;
-import Modelo.Registro.PrototypeClasificacionResiduo;
-import Modelo.Registro.PrototypeDireccion;
-import Modelo.Registro.PrototypeResiduo;
-import Modelo.Registro.PrototypeUsuario;
+import Modelo.RegistroPrototype.PrototypeClasificacionResiduo;
+import Modelo.RegistroPrototype.PrototypeDireccion;
+import Modelo.RegistroPrototype.PrototypeResiduo;
+import Modelo.RegistroPrototype.PrototypeUsuario;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import Modelo.SistemaGestionResiduosFacade;
-import Modelo.SistemaGestionResiduosFacadeImpl;
+import Modelo.Facade.SistemaGestionResiduosFacade;
+import Modelo.Facade.SistemaGestionResiduosFacadeImpl;
 
 public class RegistroConTabsSeguro extends JFrame {
     private JTabbedPane tabbedPane;

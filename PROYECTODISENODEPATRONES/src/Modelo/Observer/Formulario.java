@@ -1,4 +1,4 @@
-package Vista.PatronObserver;
+package Modelo.Observer;
 import java.util.ArrayList;
 import java.util.List;
 

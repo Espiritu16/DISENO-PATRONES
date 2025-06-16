@@ -1,5 +1,5 @@
-package Modelo;
-import Modelo.Conexion.ConexionSingleton;
+package Modelo.Proxy;
+import Modelo.ConexionSingleton.ConexionSingleton;
 import java.sql.*;
 import java.time.LocalDateTime; // Necesario para obtener la fecha y hora actual en Java 8+
 import java.time.format.DateTimeFormatter; // Para formatear la fecha y hora si es necesario

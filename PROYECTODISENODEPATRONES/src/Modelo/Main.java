@@ -1,4 +1,7 @@
 package Modelo;
+
+import Modelo.Proxy.LoginM;
+
 public class Main {
     public static void main(String[] args) {
         // Crear una instancia de la clase Login

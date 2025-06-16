@@ -4,14 +4,14 @@
  */
 package Vista;
 
-import Modelo.Registro.PrototypeClasificacionResiduo;
-import Modelo.Registro.PrototypeDireccion;
-import Modelo.Registro.PrototypeResiduo;
-import Modelo.Registro.PrototypeUsuario;
-import Modelo.SistemaGestionResiduosFacade;
-import Modelo.SistemaGestionResiduosFacadeImpl;
-import Vista.PatronObserver.BotonObservador;
-import Vista.PatronObserver.Formulario;
+import Modelo.RegistroPrototype.PrototypeClasificacionResiduo;
+import Modelo.RegistroPrototype.PrototypeDireccion;
+import Modelo.RegistroPrototype.PrototypeResiduo;
+import Modelo.RegistroPrototype.PrototypeUsuario;
+import Modelo.Facade.SistemaGestionResiduosFacade;
+import Modelo.Facade.SistemaGestionResiduosFacadeImpl;
+import Modelo.Observer.BotonObservador;
+import Modelo.Observer.Formulario;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;

@@ -1,7 +1,7 @@
 package Modelo.RegistroDAO;
 
-import Modelo.Registro.PrototypeUsuario;
-import Modelo.Conexion.ConexionSingleton;
+import Modelo.RegistroPrototype.PrototypeUsuario;
+import Modelo.ConexionSingleton.ConexionSingleton;
 import Controlador.CRUD;
 import java.sql.*;
 import javax.swing.JOptionPane;

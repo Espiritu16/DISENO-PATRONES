@@ -1,9 +1,9 @@
-package Modelo;
+package Modelo.Facade;
 
-import Modelo.Registro.PrototypeClasificacionResiduo;
-import Modelo.Registro.PrototypeDireccion;
-import Modelo.Registro.PrototypeResiduo;
-import Modelo.Registro.PrototypeUsuario;
+import Modelo.RegistroPrototype.PrototypeClasificacionResiduo;
+import Modelo.RegistroPrototype.PrototypeDireccion;
+import Modelo.RegistroPrototype.PrototypeResiduo;
+import Modelo.RegistroPrototype.PrototypeUsuario;
 import Modelo.*;
 
 public interface SistemaGestionResiduosFacade {

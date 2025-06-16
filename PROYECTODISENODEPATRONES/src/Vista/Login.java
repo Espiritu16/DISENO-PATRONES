@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista;
-import Modelo.LoginM;
+import Modelo.Proxy.LoginM;
 import javax.swing.JOptionPane;
 
 /**
@@ -135,16 +135,23 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-     // Mostrar el formulario de registro
-    int opcion = JOptionPane.showConfirmDialog(this, "¿Desea proceder con el registro?", "Confirmar", JOptionPane.YES_NO_OPTION);
+      // Confirmar si el usuario desea proceder con el registro
+        int opcion = JOptionPane.showConfirmDialog(this, "¿Desea proceder con el registro?", "Confirmar", JOptionPane.YES_NO_OPTION);
 
-    if (opcion == JOptionPane.YES_OPTION) {
-        // Abrir la ventana de registro
-        new RegistroConTabsSeguro();  // Esto crea la nueva ventana de registro y la muestra
+        if (opcion == JOptionPane.YES_OPTION) {
+            // Crear y mostrar la VentanaPrincipal
+            VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
 
-        // Cerrar la ventana principal (opcional)
-        this.setVisible(false);  // Esto cerrará la ventana principal, si así lo deseas
-    }
+            // Llamar a un nuevo método en VentanaPrincipal para que muestre el panel de registro
+            // y deshabilite los otros botones.
+            ventanaPrincipal.mostrarPanelRegistroAlInicio();
+
+            ventanaPrincipal.setVisible(true); // Hace visible la VentanaPrincipal
+
+            // Cerrar la ventana de Login actual
+            this.dispose(); // Usa dispose() para liberar los recursos de la ventana
+        }
+    
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed

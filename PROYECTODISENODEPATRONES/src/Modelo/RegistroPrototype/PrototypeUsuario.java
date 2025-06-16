@@ -1,5 +1,5 @@
 
-package Modelo.Registro;
+package Modelo.RegistroPrototype;
 import java.sql.Date;
 
 public class PrototypeUsuario implements Cloneable {

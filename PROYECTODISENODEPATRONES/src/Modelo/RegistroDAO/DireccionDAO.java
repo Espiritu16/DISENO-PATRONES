@@ -1,7 +1,7 @@
 package Modelo.RegistroDAO;
 
-import Modelo.Registro.PrototypeDireccion;
-import Modelo.Conexion.ConexionSingleton;
+import Modelo.RegistroPrototype.PrototypeDireccion;
+import Modelo.ConexionSingleton.ConexionSingleton;
 import Controlador.CRUD;
 import java.sql.*;
 

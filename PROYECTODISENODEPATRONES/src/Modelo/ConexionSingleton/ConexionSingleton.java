@@ -1,4 +1,4 @@
-package Modelo.Conexion;
+package Modelo.ConexionSingleton;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
