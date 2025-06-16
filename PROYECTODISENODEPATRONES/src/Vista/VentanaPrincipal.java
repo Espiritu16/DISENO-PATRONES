@@ -194,6 +194,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.btnSugerencias = btnSugerencias;
     }
 
+    
 
 
 }
