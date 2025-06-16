@@ -1,11 +1,15 @@
 package Vista;
+import Modelo.Registro.PrototypeClasificacionResiduo;
+import Modelo.Registro.PrototypeDireccion;
+import Modelo.Registro.PrototypeResiduo;
+import Modelo.Registro.PrototypeUsuario;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import Controlador.CRUD;
-import Controlador.CRUDFactory;
-import Controlador.EntidadDAOFactory;
+import Controlador.PatronFactory.CRUDFactory;
+import Controlador.PatronFactory.EntidadDAOFactory;
 import Modelo.*;
 import Modelo.SistemaGestionResiduosFacade;
 import Modelo.SistemaGestionResiduosFacadeImpl;

@@ -15,7 +15,6 @@ public class SistemaVistaFacade {
         this.m1 = new M1();
         this.m2 = new M2();
         this.m3 = new M3();
-        this.registro = new RegistroConTabsSeguro();
     }
 
     // Método para ejecutar la acción de M1

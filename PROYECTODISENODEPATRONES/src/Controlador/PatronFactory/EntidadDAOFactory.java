@@ -1,9 +1,10 @@
-package Controlador;
+package Controlador.PatronFactory;
 
-import Modelo.ClasificacionResiduosDAO;
-import Modelo.DireccionDAO;
-import Modelo.ResiduosDAO;
-import Modelo.UsuarioDAO;
+import Controlador.CRUD;
+import Modelo.RegistroDAO.ClasificacionResiduosDAO;
+import Modelo.RegistroDAO.DireccionDAO;
+import Modelo.RegistroDAO.ResiduosDAO;
+import Modelo.RegistroDAO.UsuarioDAO;
 
 public class EntidadDAOFactory implements CRUDFactory {
     @Override

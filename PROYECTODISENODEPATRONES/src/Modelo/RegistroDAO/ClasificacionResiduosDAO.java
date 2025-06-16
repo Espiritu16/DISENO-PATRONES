@@ -1,5 +1,7 @@
-package Modelo;
+package Modelo.RegistroDAO;
 
+import Modelo.Registro.PrototypeClasificacionResiduo;
+import Modelo.Conexion.ConexionSingleton;
 import Controlador.CRUD;
 import java.sql.*;
 import java.util.ArrayList;

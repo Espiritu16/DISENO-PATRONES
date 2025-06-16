@@ -1,4 +1,4 @@
-package Modelo;
+package Modelo.Registro;
 
 import java.sql.Date;
 

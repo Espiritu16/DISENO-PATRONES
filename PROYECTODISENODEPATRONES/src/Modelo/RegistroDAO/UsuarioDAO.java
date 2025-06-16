@@ -1,7 +1,10 @@
-package Modelo;
+package Modelo.RegistroDAO;
 
+import Modelo.Registro.PrototypeUsuario;
+import Modelo.Conexion.ConexionSingleton;
 import Controlador.CRUD;
 import java.sql.*;
+import javax.swing.JOptionPane;
 
 public class UsuarioDAO implements CRUD {
 
@@ -60,4 +63,6 @@ public class UsuarioDAO implements CRUD {
     public void eliminar() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+   
 }
