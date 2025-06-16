@@ -7,10 +7,6 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import Controlador.CRUD;
-import Controlador.PatronFactory.CRUDFactory;
-import Controlador.PatronFactory.EntidadDAOFactory;
-import Modelo.*;
 import Modelo.SistemaGestionResiduosFacade;
 import Modelo.SistemaGestionResiduosFacadeImpl;
 

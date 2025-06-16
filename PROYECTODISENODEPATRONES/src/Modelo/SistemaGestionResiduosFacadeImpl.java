@@ -8,7 +8,7 @@ import Modelo.SistemaGestionResiduosFacade;
 import Controlador.CRUD;
 import Controlador.PatronFactory.CRUDFactory;
 import Controlador.PatronFactory.EntidadDAOFactory;
-import Modelo.*;
+
 
 public class SistemaGestionResiduosFacadeImpl implements SistemaGestionResiduosFacade {
 

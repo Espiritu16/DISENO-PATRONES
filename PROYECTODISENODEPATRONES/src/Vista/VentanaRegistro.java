@@ -4,6 +4,12 @@
  */
 package Vista;
 
+import Modelo.Registro.PrototypeClasificacionResiduo;
+import Modelo.Registro.PrototypeDireccion;
+import Modelo.Registro.PrototypeResiduo;
+import Modelo.Registro.PrototypeUsuario;
+import Modelo.SistemaGestionResiduosFacade;
+import Modelo.SistemaGestionResiduosFacadeImpl;
 import Vista.PatronObserver.BotonObservador;
 import Vista.PatronObserver.Formulario;
 import javax.swing.JButton;
@@ -17,9 +23,18 @@ import javax.swing.JTextField;
  */
 public class VentanaRegistro extends javax.swing.JPanel {
     
-    private Formulario formulario;  // El sujeto (Formulario)
+    private Formulario formulario; 
     private Formulario formulario2;
     private Formulario formulario3;
+    
+    // Prototipos para guardar datos en memoria
+    private PrototypeDireccion direccion = new PrototypeDireccion();
+    private PrototypeUsuario usuario = new PrototypeUsuario();
+    private PrototypeClasificacionResiduo clasificacion = new PrototypeClasificacionResiduo();
+    private PrototypeResiduo residuo = new PrototypeResiduo();
+
+    // Puedes necesitar una instancia de la fachada si la utilizas directamente para guardar
+    private SistemaGestionResiduosFacade fachada = new SistemaGestionResiduosFacadeImpl();
     /**
      * Creates new form VentanaRegistro
      */
@@ -559,34 +574,152 @@ public class VentanaRegistro extends javax.swing.JPanel {
         add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 470));
     }// </editor-fold>//GEN-END:initComponents
 
+    //boton siguiente del panel 1
     private void btnSiguiente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguiente1ActionPerformed
-         // Verificar si todos los campos están completos
-    if (formulario.isFormularioCompleto()) {
-        // Cambiar al siguiente tab (Paso 2) en el JTabbedPane
-        jTabbedPane1.setSelectedIndex(1);  // El índice 1 corresponde al segundo panel (Paso 2)
+          if (guardarDatosParciales(0)) { // Llama al método adaptado para la pestaña 0
+        jTabbedPane1.setSelectedIndex(1);
+        // Si tu nuevo formulario tiene lógica para habilitar pestañas como el anterior
+        // jTabbedPane1.setEnabledAt(1, true);
     } else {
-        // Si el formulario no está completo, mostrar un mensaje al usuario
-        JOptionPane.showMessageDialog(this, "Por favor complete todos los campos antes de continuar.",
+        JOptionPane.showMessageDialog(this, "Por favor complete todos los campos requeridos en esta sección.",
                                       "Formulario incompleto", JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_btnSiguiente1ActionPerformed
 
+    //boton siguiente del panel 2
     private void btnSiguiente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguiente2ActionPerformed
-         // Verificar si todos los campos están completos
-    if (formulario2.isFormularioCompleto()) {
-        // Cambiar al siguiente tab (Paso 2) en el JTabbedPane
-        jTabbedPane1.setSelectedIndex(2);  // El índice 1 corresponde al segundo panel (Paso 2)
+         if (guardarDatosParciales(1)) { // Llama al método adaptado para la pestaña 1
+        jTabbedPane1.setSelectedIndex(2);
+        // Si tu nuevo formulario tiene lógica para habilitar pestañas como el anterior
+        // jTabbedPane1.setEnabledAt(2, true);
     } else {
-        // Si el formulario no está completo, mostrar un mensaje al usuario
-        JOptionPane.showMessageDialog(this, "Por favor complete todos los campos antes de continuar.",
+        JOptionPane.showMessageDialog(this, "Por favor complete todos los campos requeridos en esta sección.",
                                       "Formulario incompleto", JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_btnSiguiente2ActionPerformed
 
+    //finalizar con el registro
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+        if (guardarDatosParciales(2)) { // Llama al método adaptado para la pestaña 2 (la última)
+        boolean exito = guardarTodoEnBD();
+        if (exito) {
+            JOptionPane.showMessageDialog(this, "Datos guardados exitosamente.",
+                                          "Registro Completo", JOptionPane.INFORMATION_MESSAGE);
+            limpiarFormulario(); // Limpia y resetea el formulario
+            // Si necesitas deshabilitar pestañas después de un registro exitoso, hazlo aquí:
+            // jTabbedPane1.setEnabledAt(1, false);
+            // jTabbedPane1.setEnabledAt(2, false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al guardar los datos. Por favor, intente de nuevo.",
+                                          "Error de Registro", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Por favor complete todos los campos requeridos en esta sección.",
+                                      "Formulario incompleto", JOptionPane.WARNING_MESSAGE);
+    }
         
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
+    // Este método iría dentro de tu clase NuevoFormulario
+private void limpiarFormulario() {
+    // Limpia campos de Usuario y Dirección
+    txtNombre.setText("");
+    txtApellido.setText("");
+    txtTelefono.setText("");
+    txtCorreo.setText("");
+    txtContraseña.setText(""); // Para JPasswordField
+    txtPais.setText("Perú");
+    txtCiudad.setText("");
+    txtDistrito.setText("");
+    txtDireccion.setText("");
+    txtPostal.setText("");
+    txtReferencia.setText("");
+
+    // Limpia campos de Clasificación
+    txtNombreClaResiduo.setText("");
+    txtDescripcionClaResiduo.setText("");
+    txtColorClaResiduo.setText("");
+    txtIconoClaResiduo.setText("");
+
+    // Limpia campos de Residuo
+    txtNombreResiduo.setText("");
+    txtDescripcionResiduo.setText("");
+    txtPesoResiduo.setText("Kilogramos"); // Si es la unidad de medida predeterminada
+    txtPeligrosidadResiduo.setText("");
+
+    // Resetea los objetos prototipo creando nuevas instancias
+    direccion = new PrototypeDireccion();
+    usuario = new PrototypeUsuario();
+    clasificacion = new PrototypeClasificacionResiduo();
+    residuo = new PrototypeResiduo();
+
+    // Además, podrías querer deshabilitar las pestañas nuevamente
+    jTabbedPane1.setSelectedIndex(0); // Vuelve a la primera pestaña
+    // Si tienes un mecanismo para deshabilitar las otras pestañas (como en el constructor original)
+    // jTabbedPane1.setEnabledAt(1, false);
+    // jTabbedPane1.setEnabledAt(2, false);
+}
+    
+    // Este método iría dentro de tu clase NuevoFormulario
+private boolean guardarDatosParciales(int tabIndex) {
+    switch (tabIndex) {
+        case 0: // Pestaña de Usuario y Dirección
+            // Validar campos de Usuario
+            if (txtNombre.getText().isEmpty() || txtApellido.getText().isEmpty() ||
+                txtCorreo.getText().isEmpty() || new String(txtContraseña.getPassword()).isEmpty()) { // Uso de JPasswordField
+                return false;
+            }
+            // Validar campos de Dirección
+            if (txtDireccion.getText().isEmpty() || txtCiudad.getText().isEmpty() ||
+                txtDistrito.getText().isEmpty()) { // Puedes añadir más validaciones si es necesario
+                return false;
+            }
+
+            usuario.setNombre(txtNombre.getText());
+            usuario.setApellido(txtApellido.getText());
+            usuario.setCorreo(txtCorreo.getText());
+            usuario.setTelefono(txtTelefono.getText());
+            usuario.setContrasena_hash(new String(txtContraseña.getPassword())); // Obtener contraseña de JPasswordField
+
+            direccion.setDireccion(txtDireccion.getText());
+            direccion.setCiudad(txtCiudad.getText());
+            direccion.setDistrito(txtDistrito.getText());
+            direccion.setCodigo_postal(txtPostal.getText()); // Usando txtPostal
+            direccion.setPais(txtPais.getText());
+            direccion.setReferencia(txtReferencia.getText());
+            return true;
+
+        case 1: // Pestaña de Clasificación (anteriormente tabIndex 1)
+            if (txtNombreClaResiduo.getText().isEmpty() || txtDescripcionClaResiduo.getText().isEmpty()) {
+                return false;
+            }
+            clasificacion.setNombre(txtNombreClaResiduo.getText());
+            clasificacion.setDescripcion(txtDescripcionClaResiduo.getText());
+            clasificacion.setColor_codigo(txtColorClaResiduo.getText());
+            clasificacion.setIcono(txtIconoClaResiduo.getText());
+            return true;
+
+        case 2: // Pestaña de Residuo (anteriormente tabIndex 2)
+            if (txtNombreResiduo.getText().isEmpty() || txtDescripcionResiduo.getText().isEmpty() ||
+                txtPesoResiduo.getText().isEmpty()) { // ¡Considera validar txtPesoResiduo como número!
+                return false;
+            }
+            residuo.setNombre(txtNombreResiduo.getText());
+            residuo.setDescripcion(txtDescripcionResiduo.getText());
+            residuo.setUnidad_medida(txtPesoResiduo.getText()); // Asumiendo que txtPesoResiduo es la unidad de medida
+            residuo.setPeligrosidad(txtPeligrosidadResiduo.getText());
+            return true;
+
+        default:
+            return false;
+    }
+}
+
+// Este método iría dentro de tu clase NuevoFormulario
+private boolean guardarTodoEnBD() {
+    SistemaGestionResiduosFacade fachada = new SistemaGestionResiduosFacadeImpl();
+    return fachada.registrarFlujoCompleto(usuario, direccion, clasificacion, residuo);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Nombre;
